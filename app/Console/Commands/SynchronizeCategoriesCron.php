@@ -21,14 +21,14 @@ class SynchronizeCategoriesCron extends Command
      *
      * @var string
      */
-    protected $description = 'Synchronize categories from the API';
+    protected $description = 'Synchronize categories from the external API';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $apiUrl = env( 'WATER_MANAGER_API_ENDPOINT' )."productID.jsp?FORMAT=JSON";
+        $apiUrl = env( 'WATER_MANAGER_API_ENDPOINT' )."/productID.jsp?FORMAT=JSON";
 
         $response = Http::get( $apiUrl );
 

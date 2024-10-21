@@ -18,7 +18,8 @@ class Incident extends Model
         'latitude',
         'longitude',
         'value',
-        'is_active'
+        'is_active',
+        'dt_register'
     ];
 
     public $timestamps = false;
