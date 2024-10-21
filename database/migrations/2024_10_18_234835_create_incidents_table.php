@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('incident', function (Blueprint $table) {
             $table->id();
             $table->foreignId( 'ref_user' )->constrained(
-                'user', 'id'
+                'users', 'id'
             );
-            $table->integer( 'ref_vendor_id' )->nullable();
+            $table->text( 'ref_vendor_id' )->nullable();
             $table->foreignId( 'ref_category' )->constrained(
                 'category', 'id'
             );
