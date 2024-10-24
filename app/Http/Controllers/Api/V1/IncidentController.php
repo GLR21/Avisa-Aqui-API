@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreIncidentRequest;
-use App\Http\Requests\UpdateIncidentRequest;
 use App\Models\Incident;
+use App\Http\Requests\Api\V1\StoreIncidentRequest;
+use App\Http\Requests\Api\V1\UpdateIncidentRequest;
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\Api\V1\IncidentCollection;
+use App\Http\Resources\Api\V1\IncidentResource;
 
 class IncidentController extends Controller
 {
@@ -15,7 +16,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        //
+        return new IncidentCollection(Incident::all());
     }
 
     /**
@@ -23,7 +24,7 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -31,7 +32,7 @@ class IncidentController extends Controller
      */
     public function store(StoreIncidentRequest $request)
     {
-        //
+        return new IncidentResource( Incident::create( $request->all() )->refresh() );
     }
 
     /**
@@ -39,7 +40,7 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident)
     {
-        //
+        return new IncidentResource( $incident );
     }
 
     /**
@@ -63,6 +64,13 @@ class IncidentController extends Controller
      */
     public function destroy(Incident $incident)
     {
-        //
+        if ( !$incident )
+        {
+            return response()->json( [ 'message' => 'Incident not found' ], 404 );
+        }
+
+        $incident->is_active = false;
+        $incident->save();
+        return response()->json( [ 'message' => 'Incident deleted successfully' ] );
     }
 }
