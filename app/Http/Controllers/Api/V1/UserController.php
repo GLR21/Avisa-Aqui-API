@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\StoreUserRequest;
+use App\Http\Resources\Api\V1\UserCollection;
+use App\Http\Resources\Api\V1\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return new UserCollection( User::all() );
     }
 
     /**
@@ -26,17 +30,19 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['password'] = md5( $data['password'] );
+        return new UserResource( User::create( $data )->refresh() );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return new UserResource( $user );
     }
 
     /**

@@ -6,13 +6,15 @@ Route::group( [ 'prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1' ]
     Route::get( 'incidents', 'IncidentController@index' );
     Route::get( 'incidents/{incident}', 'IncidentController@show' );
     Route::post( 'incidents', 'IncidentController@store' );
-    //Route::put( 'incidents/{incident}', 'IncidentController@update' ); -- to be implemented
     Route::delete( 'incidents/{incident}', 'IncidentController@destroy' );
 
     Route::get( 'categories', 'CategoryController@index' );
     Route::get( 'categories/{category}', 'CategoryController@show' );
     Route::post( 'categories', 'CategoryController@store' );
 
+    Route::get( 'users', 'UserController@index' );
+    Route::get( 'users/{user}', 'UserController@show' );
+    Route::post( 'users', 'UserController@store' );
 } );
 
 ?>
