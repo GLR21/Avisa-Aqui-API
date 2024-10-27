@@ -1,44 +1,40 @@
-version: '3.8'
-
 services:
-    laravel.app:
+    laravel.test:
         build:
-            context: ./docker
+            context: './vendor/laravel/sail/runtimes/8.3'
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.3/app
-        container_name: laravel_${APP_ENV}app${BRANCH_NAME}
+        image: 'sail-8.3/app'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${LARAVEL_PORT}:${EXTERNAL_PORT}'
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            PORT: '${EXTERNAL_PORT}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - '.:/var/www/html'
         networks:
             - sail
         depends_on:
-            - pgsql.app
-        env_file:
-            - .env
-
-    pgsql.app:
+            - pgsql
+    pgsql:
         image: 'postgres:15'
-        container_name: pgsql_${APP_ENV}app${BRANCH_NAME}
         ports:
-            - '${DB_PORT}'
+            - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
-            POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD}'
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
         volumes:
-            - 'sail-pgsql-test:/var/lib/postgresql/data'
-            - './database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+            - 'sail-pgsql:/var/lib/postgresql/data'
+            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
         networks:
             - sail
         healthcheck:
@@ -52,15 +48,9 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
-        env_file:
-            - .env
-
 networks:
     sail:
         driver: bridge
-
 volumes:
-    sail-pgsql-app:
-        driver: local
-    sail-pgsql-test:
+    sail-pgsql:
         driver: local
