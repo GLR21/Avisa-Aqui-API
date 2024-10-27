@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Resources\Api\V1\UserCollection;
 use App\Http\Resources\Api\V1\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -33,7 +34,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->all();
-        $data['password'] = md5( $data['password'] );
+        $data['password'] = Hash::make($data['password']);
         return new UserResource( User::create( $data )->refresh() );
     }
 
