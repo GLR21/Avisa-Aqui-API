@@ -10,7 +10,7 @@ Route::group( [ 'prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1' ]
 
     Route::get( 'categories', 'CategoryController@index' );
     Route::get( 'categories/{category}', 'CategoryController@show' );
-    Route::post( 'categories', 'CategoryController@store' );
+    // Route::post( 'categories', 'CategoryController@store' ); -- todo
 
     Route::get( 'users', 'UserController@index' );
     Route::get( 'users/{user}', 'UserController@show' );
