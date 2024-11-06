@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function auth( AuthRequest $request)
     {
         $document = $request->document;
-        $password = md5($request->password);
+        $password = Hash::make($request->password);
 
         $user = User::where('document', $document)->where('password', $password)->first();
         if($user){
