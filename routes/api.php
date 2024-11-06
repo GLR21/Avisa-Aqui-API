@@ -16,7 +16,7 @@ Route::group( [ 'prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1' ]
     Route::get( 'users/{user}', 'UserController@show' );
     Route::post( 'users', 'UserController@store' );
 
-    Route::post( 'login', 'AuthController@login' );
+    Route::post( 'login', 'AuthController@auth' );
 } );
 
 ?>
