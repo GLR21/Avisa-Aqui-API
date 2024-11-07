@@ -13,6 +13,7 @@ class Log extends Model
 
     protected $fillable = [
         'url',
+        'origin',
         'method',
         'request_body',
         'dt_log'

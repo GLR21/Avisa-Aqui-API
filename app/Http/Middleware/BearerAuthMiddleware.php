@@ -45,6 +45,7 @@ class BearerAuthMiddleware
         $log = new Log(
             [
                 'url' => $request->url(),
+                'origin' => $request->ip(),
                 'method' => $request->method(),
                 'request_body' => json_encode($request->all()),
                 'dt_log' => now()
