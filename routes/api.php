@@ -7,6 +7,7 @@ Route::group( [ 'prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1' ]
     Route::get( 'incidents/{incident}', 'IncidentController@show' );
     Route::post( 'incidents', 'IncidentController@store' );
     Route::delete( 'incidents/{incident}', 'IncidentController@destroy' );
+    Route::get('incidents/{incident}/resolve', 'IncidentController@resolve');
 
     Route::get( 'categories', 'CategoryController@index' );
     Route::get( 'categories/{category}', 'CategoryController@show' );
