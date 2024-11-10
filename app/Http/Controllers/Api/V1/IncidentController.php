@@ -73,4 +73,16 @@ class IncidentController extends Controller
         $incident->save();
         return response()->json( [ 'message' => 'Incident deleted successfully' ] );
     }
+
+    public function resolve(Incident $incident)
+    {
+        if ( !$incident )
+        {
+            return response()->json( [ 'message' => 'Incident not found' ], 404 );
+        }
+
+        $incident->is_active = false;
+        $incident->save();
+        return response()->json( [ 'message' => 'Incident resolved successfully' ], 200 );
+    }
 }
