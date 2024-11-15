@@ -8,15 +8,38 @@ use App\Http\Requests\Api\V1\UpdateIncidentRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\IncidentCollection;
 use App\Http\Resources\Api\V1\IncidentResource;
+use Illuminate\Http\Request;
 
 class IncidentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request )
     {
-        return new IncidentCollection(Incident::all());
+        if( empty($request->query()) )
+        {
+            return new IncidentCollection(Incident::all());
+        }
+
+        $incident = Incident::query();
+
+        if( $request->has('ref_user') )
+        {
+            $incident->where('ref_user', '=', $request->ref_user);
+        }
+
+        if( $request->has('ref_category') )
+        {
+            $incident->where('ref_category', '=', $request->ref_category);
+        }
+
+        if( $request->has('active') )
+        {
+            $incident->where('is_active', $request->active);
+        }
+
+        return new IncidentCollection( $incident->get() );
     }
 
     /**
